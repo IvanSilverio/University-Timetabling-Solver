@@ -135,5 +135,208 @@ def construir_grafos_multicamadas(df):
     print(f"Grafo construído: {len(G.nodes)} nós, {len(G.edges)} arestas de conflito.")
     return G, nx.complement(G)
 
+class SolucionadorTimetabling:
+    def __init__(self, G_comp, df, prefs):
+        self.G_comp = G_comp
+        self.mapa = df.set_index('ID_Aula').to_dict('index')
+        self.prefs = prefs
+        self.grade = {}
+        self.carga_prof = defaultdict(lambda: defaultdict(int))
+        self.total_aulas_prof = df['Professor'].value_counts().to_dict()
+        
+    def calcular_pontuacao_global(self):
+        score = 0
+        for id_aula, horario in self.grade.items():
+            prof = self.mapa[id_aula]['Professor']
+            prefs_prof = self.prefs.get(prof, {})
+            
+            if horario in prefs_prof.get('preferir', []): score += 10
+            elif horario in prefs_prof.get('evitar', []): score -= 10
+        return score
 
-# TODO: Implementar classe do Solver (Carlos/Dev3)
+    def slots_overlap(self, s1, s2):
+        d1, h1 = s1.split('_', 1)
+        d2, h2 = s2.split('_', 1)
+        if d1 != d2: return False
+        set1 = set(h1.split('_'))
+        set2 = set(h2.split('_'))
+        return not set1.isdisjoint(set2)
+
+    def encontrar_clique_maximal(self, candidatos, dia, slot_nome):
+        candidatos_lista = list(candidatos)
+        random.shuffle(candidatos_lista)
+        
+        def pontuacao(nid):
+            prof = self.mapa[nid]['Professor']
+            p = self.prefs.get(prof, {})
+            score = 10
+            if slot_nome in p.get('preferir', []): score = 100
+            if slot_nome in p.get('evitar', []): score = 0
+            carga = self.total_aulas_prof.get(prof, 0)
+            return score + (carga * 0.5)
+
+        fila = sorted(candidatos_lista, key=pontuacao, reverse=True)
+        
+        clique = []
+        for node in fila:
+            prof = self.mapa[node]['Professor']
+            duracao = self.mapa[node]['CH_Aula'] 
+            
+            # Checa carga diária
+            if self.carga_prof[prof][dia] + duracao > 8: continue
+            
+            # Checa compatibilidade com o Clique ATUAL (mesmo slot exato)
+            compativel = True
+            for membro in clique:
+                if not self.G_comp.has_edge(node, membro):
+                    compativel = False; break
+            if not compativel: continue
+            
+            # --- CORREÇÃO AQUI: VALIDAÇÃO CRUZADA DE SLOTS (2h vs 3h) ---
+            # Verifica se já existe aula alocada em horários sobrepostos (ex: N3_N4 vs N3_N4_N5)
+            # e se essa aula conflita (Professor ou Turma)
+            
+            nome_mat = self.mapa[node]['ID_Disciplina']
+            curso_node = self.mapa[node]['Curso']
+            periodo_node = self.mapa[node]['Periodo']
+            tipo_node = self.mapa[node].get('Tipo_Real', 'OB')
+            trilha_node = self.mapa[node].get('Trilha')
+
+            for alocada, h in self.grade.items():
+                if self.slots_overlap(h, slot_nome):
+                    # 1. PROFESSOR
+                    if self.mapa[alocada]['Professor'] == prof:
+                        compativel = False; break
+                    
+                    # 2. MESMA DISCIPLINA (A vs B)
+                    if self.mapa[alocada]['ID_Disciplina'] == nome_mat:
+                         if h.split('_')[0] == dia: # Mesmo dia
+                            compativel = False; break
+
+                    # 3. TURMA / COHORT (A Correção Principal)
+                    # Se for mesma turma, verifica se pode haver paralelismo (Trilhas)
+                    if self.mapa[alocada]['Curso'] == curso_node and \
+                       self.mapa[alocada]['Periodo'] == periodo_node:
+                        
+                        # Verifica se é exceção de trilha
+                        tipo_alocada = self.mapa[alocada].get('Tipo_Real', 'OB')
+                        trilha_alocada = self.mapa[alocada].get('Trilha')
+                        
+                        eh_conflito_turma = True
+                        
+                        # Lógica: Só NÃO é conflito se ambos forem OP e de trilhas diferentes
+                        if tipo_node == 'OP' and tipo_alocada == 'OP':
+                            if trilha_node is not None and trilha_alocada is not None:
+                                if trilha_node != trilha_alocada:
+                                    eh_conflito_turma = False
+                        
+                        if eh_conflito_turma:
+                            compativel = False; break
+
+            if compativel: clique.append(node)
+            
+        return clique
+
+    def dfs_slots(self, idx, restantes):
+        if not restantes: return True
+        if idx >= len(SLOTS_TEMPO): return False
+
+        dia, s_cco, s_sin = SLOTS_TEMPO[idx]
+        
+        validos = []
+        duracao_sin = 3 if 'N5' in s_sin else (2 if s_sin else 0)
+        duracao_cco = 2 if s_cco else 0
+
+        for n in restantes:
+            eh_sin = 'SIN' in str(self.mapa[n]['Curso'])
+            ch_aula = self.mapa[n]['CH_Aula']
+            
+            if eh_sin:
+                if s_sin == '' or ch_aula != duracao_sin: continue
+            else:
+                if s_cco == '' or ch_aula != duracao_cco: continue 
+            validos.append(n)
+
+        if not validos:
+            return self.dfs_slots(idx + 1, restantes)
+
+        slot_real = f"{dia}_{s_sin if s_sin else s_cco}"
+        clique = self.encontrar_clique_maximal(validos, dia, slot_real)
+        
+        if not clique:
+             return self.dfs_slots(idx + 1, restantes)
+
+        for n in clique:
+            eh_sin = 'SIN' in str(self.mapa[n]['Curso'])
+            self.grade[n] = f"{dia}_{s_sin}" if eh_sin else f"{dia}_{s_cco}"
+            self.carga_prof[self.mapa[n]['Professor']][dia] += self.mapa[n]['CH_Aula']
+        
+        if self.dfs_slots(idx + 1, restantes - set(clique)):
+            return True
+
+        for n in clique:
+            del self.grade[n]
+            self.carga_prof[self.mapa[n]['Professor']][dia] -= self.mapa[n]['CH_Aula']
+            
+        return False
+
+def executar():
+    df = carregar_dados()
+    if df is None: return
+    
+    prefs = gerar_preferencias_ficticias(df)
+    G, G_comp = construir_grafos_multicamadas(df)
+    
+    # --- NOVA LÓGICA: REORDENAR SLOTS POR POPULARIDADE ---
+    def calcular_popularidade_slot(slot_tuple):
+        dia, s_cco, s_sin = slot_tuple
+        slot_real = f"{dia}_{s_sin if s_sin else s_cco}"
+        
+        # Conta quantos professores PREFEREM esse slot exato
+        popularidade = 0
+        for prof, p_data in prefs.items():
+            if slot_real in p_data.get('preferir', []):
+                popularidade += 1
+        return popularidade
+
+    # Ordena SLOTS_TEMPO: Slots com mais "Likes" aparecem primeiro na lista
+    SLOTS_TEMPO.sort(key=calcular_popularidade_slot, reverse=True)
+    
+    TEMPO_LIMITE_SEGUNDOS = 15
+    inicio = time.time()
+    
+    melhor_grade = None
+    melhor_score = -float('inf')
+    solucoes_encontradas = 0
+    tentativas = 0
+    
+    print(f"Iniciando Otimização por {TEMPO_LIMITE_SEGUNDOS} segundos...")
+    
+    while (time.time() - inicio) < TEMPO_LIMITE_SEGUNDOS:
+        tentativas += 1
+        solver = SolucionadorTimetabling(G_comp, df, prefs)
+        sucesso = solver.dfs_slots(0, set(G_comp.nodes))
+        
+        if sucesso:
+            solucoes_encontradas += 1
+            score_atual = solver.calcular_pontuacao_global()
+            tempo_decorrido = time.time() - inicio
+            print(f"[T+{tempo_decorrido:.1f}s] Solução #{solucoes_encontradas} encontrada. Score: {score_atual}")
+            
+            if score_atual > melhor_score:
+                melhor_score = score_atual
+                melhor_grade = solver.grade.copy()
+                print(f"   >>> NOVA MELHOR GRADE! (Score: {melhor_score})")
+        
+    print("\n" + "="*40)
+    print(f"FIM. Soluções: {solucoes_encontradas}. Melhor Score: {melhor_score}")
+    
+    if melhor_grade:
+        caminho_saida = os.path.join(BASE_DIR, "grade_final.csv")
+        pd.DataFrame(list(melhor_grade.items()), columns=['Aula', 'Horario']).to_csv(caminho_saida, index=False)
+        print(f"Melhor grade salva em '{caminho_saida}'.")
+    else:
+        print("FALHA: Nenhuma solução encontrada.")
+
+
+# TODO: Criar loop principal de otimização
