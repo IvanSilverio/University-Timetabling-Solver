@@ -75,5 +75,65 @@ def carregar_dados():
         print(f"Erro ao carregar dados: {e}")
         return None
 
+def construir_grafos_multicamadas(df):
+    print("Construindo Grafo Multicamadas (Turma + Prof + Recurso)...")
+    G = nx.Graph()
+    
+    for _, row in df.iterrows():
+        G.add_node(row['ID_Aula'], **row.to_dict())
+    
+    nodes = list(G.nodes(data=True))
+    turmas = defaultdict(list)
+    for nid, data in nodes:
+        turmas[(data['Curso'], data['Periodo'])].append((nid, data))
+    
+    # --- CAMADA 1: TURMA (COM TRILHAS) ---
+    for lista in turmas.values():
+        for i in range(len(lista)):
+            u, data_u = lista[i]
+            for j in range(i+1, len(lista)):
+                v, data_v = lista[j]
+                
+                eh_conflito = True 
+                
+                tipo_u = data_u.get('Tipo_Real', 'OB')
+                tipo_v = data_v.get('Tipo_Real', 'OB')
+                trilha_u = data_u.get('Trilha')
+                trilha_v = data_v.get('Trilha')
+                
+                # Permite paralelismo apenas entre Optativas de trilhas diferentes
+                if tipo_u == 'OP' and tipo_v == 'OP':
+                    if trilha_u is not None and trilha_v is not None:
+                        if trilha_u != trilha_v:
+                            eh_conflito = False 
 
-# TODO: Implementar construção do grafo (Bruno/Dev2)
+                if eh_conflito:
+                    G.add_edge(u, v, tipo='Turma')
+
+    # --- CAMADAS GERAIS ---
+    for i in range(len(nodes)):
+        u, data_u = nodes[i]
+        for j in range(i + 1, len(nodes)):
+            v, data_v = nodes[j]
+            
+            if G.has_edge(u, v): continue
+            
+            eh_sin_u = 'SIN' in str(data_u['Curso'])
+            eh_sin_v = 'SIN' in str(data_v['Curso'])
+            
+            if eh_sin_u == eh_sin_v:
+                if data_u['Professor'] == data_v['Professor']:
+                    G.add_edge(u, v, tipo='Professor')
+                
+                if pd.notna(data_u['Lab_Requerido']) and pd.notna(data_v['Lab_Requerido']):
+                    if data_u['Lab_Requerido'] == data_v['Lab_Requerido']:
+                        G.add_edge(u, v, tipo='Recurso_Fisico')
+
+                if data_u['ID_Disciplina'] == data_v['ID_Disciplina']:
+                    G.add_edge(u, v, tipo='Disciplina')
+
+    print(f"Grafo construído: {len(G.nodes)} nós, {len(G.edges)} arestas de conflito.")
+    return G, nx.complement(G)
+
+
+# TODO: Implementar classe do Solver (Carlos/Dev3)
