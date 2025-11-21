@@ -338,5 +338,5 @@ def executar():
     else:
         print("FALHA: Nenhuma solução encontrada.")
 
-
-# TODO: Criar loop principal de otimização
+if __name__ == "__main__":
+    executar()
