@@ -1,0 +1,1066 @@
+
+    <!DOCTYPE html>
+    <html lang="pt-br">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Grade Universitária - Trilhas de Optativas</title>
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+        <style>
+            body { background-color: #f0f2f5; padding-top: 20px; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+            
+            /* Estilo Base do Card */
+            .aula-card { 
+                background-color: #fff; 
+                border-left: 5px solid #0d6efd; /* Azul padrão (OB) */
+                padding: 10px; 
+                margin-bottom: 8px; 
+                box-shadow: 0 2px 5px rgba(0,0,0,0.08);
+                border-radius: 6px;
+                font-size: 0.85rem;
+                position: relative;
+                transition: transform 0.2s;
+            }
+            .aula-card:hover { transform: scale(1.02); box-shadow: 0 4px 10px rgba(0,0,0,0.15); z-index: 10; }
+            
+            /* Estilos de Trilha */
+            .aula-card.trilha-1 { 
+                border-left-color: #0dcaf0; /* Ciano */
+                background-color: #faffff;
+            }
+            .aula-card.trilha-2 { 
+                border-left-color: #ffc107; /* Amarelo/Laranja */
+                background-color: #fffff5;
+            }
+            
+            /* Tipografia */
+            .materia { font-weight: 700; color: #343a40; display: block; margin-bottom: 4px; line-height: 1.2; }
+            .prof { font-size: 0.8rem; color: #6c757d; display: block; }
+            .lab { font-size: 0.75rem; color: #dc3545; font-weight: bold; display: block; margin-top: 4px; }
+            
+            /* Badges */
+            .badge-trilha {
+                position: absolute;
+                top: 5px;
+                right: 5px;
+                font-size: 0.65rem;
+                padding: 3px 6px;
+                border-radius: 4px;
+                text-transform: uppercase;
+                font-weight: bold;
+            }
+            .bg-t1 { background-color: #0dcaf0; color: #000; }
+            .bg-t2 { background-color: #ffc107; color: #000; }
+            
+            /* Tabela */
+            .slot-cell { 
+                vertical-align: middle; 
+                font-weight: bold; 
+                background-color: #e9ecef; 
+                color: #495057;
+                width: 100px; 
+                text-align: center; 
+                font-size: 0.8rem;
+            }
+            .table th { text-align: center; background-color: #212529; color: white; border: none;}
+            
+            /* Navegação */
+            .nav-pills .nav-link.active { background-color: #0d6efd; }
+            .tab-content { background-color: white; padding: 20px; border-radius: 0 0 8px 8px; border: 1px solid #dee2e6; border-top: none; }
+        </style>
+    </head>
+    <body>
+    <div class="container-fluid px-4">
+        <h2 class="text-center mb-4">Grade Horária Otimizada <small class="text-muted fs-6">Com Visualização de Trilhas</small></h2>
+    <ul class="nav nav-tabs" id="cursoTabs" role="tablist">
+        <li class="nav-item">
+            <button class="nav-link active" id="CCO-tab" data-bs-toggle="tab" data-bs-target="#CCO-pane" type="button" role="tab">CCO</button>
+        </li>
+        <li class="nav-item">
+            <button class="nav-link " id="SIN-tab" data-bs-toggle="tab" data-bs-target="#SIN-pane" type="button" role="tab">SIN</button>
+        </li></ul><div class="tab-content"><div class="tab-pane fade show active" id="CCO-pane" role="tabpanel"><div class="d-flex align-items-start mt-3"><div class="nav flex-column nav-pills me-3" role="tablist" aria-orientation="vertical"><button class="nav-link active text-start" id="v-pills-CCO-1-tab" data-bs-toggle="pill" data-bs-target="#v-pills-CCO-1" type="button" role="tab">Periodo 1</button><button class="nav-link  text-start" id="v-pills-CCO-2-tab" data-bs-toggle="pill" data-bs-target="#v-pills-CCO-2" type="button" role="tab">Periodo 2</button><button class="nav-link  text-start" id="v-pills-CCO-3-tab" data-bs-toggle="pill" data-bs-target="#v-pills-CCO-3" type="button" role="tab">Periodo 3</button><button class="nav-link  text-start" id="v-pills-CCO-4-tab" data-bs-toggle="pill" data-bs-target="#v-pills-CCO-4" type="button" role="tab">Periodo 4</button><button class="nav-link  text-start" id="v-pills-CCO-5-tab" data-bs-toggle="pill" data-bs-target="#v-pills-CCO-5" type="button" role="tab">Periodo 5</button><button class="nav-link  text-start" id="v-pills-CCO-6-tab" data-bs-toggle="pill" data-bs-target="#v-pills-CCO-6" type="button" role="tab">Periodo 6</button><button class="nav-link  text-start" id="v-pills-CCO-7-tab" data-bs-toggle="pill" data-bs-target="#v-pills-CCO-7" type="button" role="tab">Periodo 7</button><button class="nav-link  text-start" id="v-pills-CCO-8-tab" data-bs-toggle="pill" data-bs-target="#v-pills-CCO-8" type="button" role="tab">Periodo 8</button></div><div class="tab-content w-100"><div class="tab-pane fade show active" id="v-pills-CCO-1" role="tabpanel"><div class="table-responsive"><table class="table table-bordered mb-0"><thead><tr><th>Horário</th><th>SEG</th><th>TER</th><th>QUA</th><th>QUI</th><th>SEX</th></tr></thead><tbody><tr><td class='slot-cell'>M1<br>M2</td><td style='min-width: 140px; vertical-align: top;'></td><td style='min-width: 140px; vertical-align: top;'></td><td style='min-width: 140px; vertical-align: top;'></td><td style='min-width: 140px; vertical-align: top;'></td><td style='min-width: 140px; vertical-align: top;'></td></tr><tr><td class='slot-cell'>M3<br>M4</td><td style='min-width: 140px; vertical-align: top;'>
+                <div class='aula-card '>
+                    
+                    <span class='materia'>CCO_P1_OB_05</span>
+                    <span class='prof'>Prof_CCO_14</span>
+                    
+                </div>
+                </td><td style='min-width: 140px; vertical-align: top;'>
+                <div class='aula-card '>
+                    
+                    <span class='materia'>CCO_P1_OB_04</span>
+                    <span class='prof'>Prof_CCO_10</span>
+                    <span class='lab'>Lab_Informatica_2</span>
+                </div>
+                </td><td style='min-width: 140px; vertical-align: top;'>
+                <div class='aula-card '>
+                    
+                    <span class='materia'>CCO_P1_OB_05</span>
+                    <span class='prof'>Prof_CCO_14</span>
+                    
+                </div>
+                </td><td style='min-width: 140px; vertical-align: top;'>
+                <div class='aula-card '>
+                    
+                    <span class='materia'>CCO_P1_OB_03</span>
+                    <span class='prof'>Prof_CCO_2</span>
+                    
+                </div>
+                </td><td style='min-width: 140px; vertical-align: top;'>
+                <div class='aula-card '>
+                    
+                    <span class='materia'>CCO_P1_OB_03</span>
+                    <span class='prof'>Prof_CCO_2</span>
+                    
+                </div>
+                </td></tr><tr><td class='slot-cell'>T1<br>T2</td><td style='min-width: 140px; vertical-align: top;'></td><td style='min-width: 140px; vertical-align: top;'></td><td style='min-width: 140px; vertical-align: top;'></td><td style='min-width: 140px; vertical-align: top;'></td><td style='min-width: 140px; vertical-align: top;'></td></tr><tr><td class='slot-cell'>T3<br>T4</td><td style='min-width: 140px; vertical-align: top;'>
+                <div class='aula-card '>
+                    
+                    <span class='materia'>CCO_P1_OB_04</span>
+                    <span class='prof'>Prof_CCO_10</span>
+                    <span class='lab'>Lab_Informatica_2</span>
+                </div>
+                </td><td style='min-width: 140px; vertical-align: top;'>
+                <div class='aula-card '>
+                    
+                    <span class='materia'>CCO_P1_OB_01</span>
+                    <span class='prof'>Prof_CCO_4</span>
+                    
+                </div>
+                </td><td style='min-width: 140px; vertical-align: top;'>
+                <div class='aula-card '>
+                    
+                    <span class='materia'>CCO_P1_OB_01</span>
+                    <span class='prof'>Prof_CCO_4</span>
+                    
+                </div>
+                </td><td style='min-width: 140px; vertical-align: top;'></td><td style='min-width: 140px; vertical-align: top;'>
+                <div class='aula-card '>
+                    
+                    <span class='materia'>CCO_P1_OB_02</span>
+                    <span class='prof'>Prof_CCO_11</span>
+                    <span class='lab'>Lab_Redes</span>
+                </div>
+                </td></tr></tbody></table></div></div><div class="tab-pane fade " id="v-pills-CCO-2" role="tabpanel"><div class="table-responsive"><table class="table table-bordered mb-0"><thead><tr><th>Horário</th><th>SEG</th><th>TER</th><th>QUA</th><th>QUI</th><th>SEX</th></tr></thead><tbody><tr><td class='slot-cell'>M1<br>M2</td><td style='min-width: 140px; vertical-align: top;'>
+                <div class='aula-card '>
+                    
+                    <span class='materia'>CCO_P2_OB_02</span>
+                    <span class='prof'>Prof_CCO_1</span>
+                    
+                </div>
+                </td><td style='min-width: 140px; vertical-align: top;'></td><td style='min-width: 140px; vertical-align: top;'></td><td style='min-width: 140px; vertical-align: top;'></td><td style='min-width: 140px; vertical-align: top;'></td></tr><tr><td class='slot-cell'>M3<br>M4</td><td style='min-width: 140px; vertical-align: top;'></td><td style='min-width: 140px; vertical-align: top;'>
+                <div class='aula-card '>
+                    
+                    <span class='materia'>CCO_P2_OB_03</span>
+                    <span class='prof'>Prof_CCO_11</span>
+                    
+                </div>
+                </td><td style='min-width: 140px; vertical-align: top;'>
+                <div class='aula-card '>
+                    
+                    <span class='materia'>CCO_P2_OB_04</span>
+                    <span class='prof'>Prof_CCO_4</span>
+                    <span class='lab'>Lab_Hardware</span>
+                </div>
+                </td><td style='min-width: 140px; vertical-align: top;'>
+                <div class='aula-card '>
+                    
+                    <span class='materia'>CCO_P2_OB_04</span>
+                    <span class='prof'>Prof_CCO_4</span>
+                    <span class='lab'>Lab_Hardware</span>
+                </div>
+                </td><td style='min-width: 140px; vertical-align: top;'>
+                <div class='aula-card '>
+                    
+                    <span class='materia'>CCO_P2_OB_03</span>
+                    <span class='prof'>Prof_CCO_11</span>
+                    
+                </div>
+                </td></tr><tr><td class='slot-cell'>T1<br>T2</td><td style='min-width: 140px; vertical-align: top;'></td><td style='min-width: 140px; vertical-align: top;'></td><td style='min-width: 140px; vertical-align: top;'></td><td style='min-width: 140px; vertical-align: top;'></td><td style='min-width: 140px; vertical-align: top;'></td></tr><tr><td class='slot-cell'>T3<br>T4</td><td style='min-width: 140px; vertical-align: top;'>
+                <div class='aula-card '>
+                    
+                    <span class='materia'>CCO_P2_OB_01</span>
+                    <span class='prof'>Prof_CCO_8</span>
+                    <span class='lab'>Lab_Redes</span>
+                </div>
+                </td><td style='min-width: 140px; vertical-align: top;'>
+                <div class='aula-card '>
+                    
+                    <span class='materia'>CCO_P2_OB_05</span>
+                    <span class='prof'>Prof_CCO_12</span>
+                    
+                </div>
+                </td><td style='min-width: 140px; vertical-align: top;'>
+                <div class='aula-card '>
+                    
+                    <span class='materia'>CCO_P2_OB_05</span>
+                    <span class='prof'>Prof_CCO_12</span>
+                    
+                </div>
+                </td><td style='min-width: 140px; vertical-align: top;'>
+                <div class='aula-card '>
+                    
+                    <span class='materia'>CCO_P2_OB_01</span>
+                    <span class='prof'>Prof_CCO_8</span>
+                    <span class='lab'>Lab_Redes</span>
+                </div>
+                </td><td style='min-width: 140px; vertical-align: top;'>
+                <div class='aula-card '>
+                    
+                    <span class='materia'>CCO_P2_OB_02</span>
+                    <span class='prof'>Prof_CCO_1</span>
+                    
+                </div>
+                </td></tr></tbody></table></div></div><div class="tab-pane fade " id="v-pills-CCO-3" role="tabpanel"><div class="table-responsive"><table class="table table-bordered mb-0"><thead><tr><th>Horário</th><th>SEG</th><th>TER</th><th>QUA</th><th>QUI</th><th>SEX</th></tr></thead><tbody><tr><td class='slot-cell'>M1<br>M2</td><td style='min-width: 140px; vertical-align: top;'></td><td style='min-width: 140px; vertical-align: top;'></td><td style='min-width: 140px; vertical-align: top;'></td><td style='min-width: 140px; vertical-align: top;'></td><td style='min-width: 140px; vertical-align: top;'></td></tr><tr><td class='slot-cell'>M3<br>M4</td><td style='min-width: 140px; vertical-align: top;'>
+                <div class='aula-card '>
+                    
+                    <span class='materia'>CCO_P3_OB_02</span>
+                    <span class='prof'>Prof_CCO_1</span>
+                    
+                </div>
+                </td><td style='min-width: 140px; vertical-align: top;'>
+                <div class='aula-card '>
+                    
+                    <span class='materia'>CCO_P3_OB_01</span>
+                    <span class='prof'>Prof_CCO_1</span>
+                    
+                </div>
+                </td><td style='min-width: 140px; vertical-align: top;'>
+                <div class='aula-card '>
+                    
+                    <span class='materia'>CCO_P3_OB_02</span>
+                    <span class='prof'>Prof_CCO_1</span>
+                    
+                </div>
+                </td><td style='min-width: 140px; vertical-align: top;'>
+                <div class='aula-card '>
+                    
+                    <span class='materia'>CCO_P3_OB_01</span>
+                    <span class='prof'>Prof_CCO_1</span>
+                    
+                </div>
+                </td><td style='min-width: 140px; vertical-align: top;'>
+                <div class='aula-card '>
+                    
+                    <span class='materia'>CCO_P3_OB_03</span>
+                    <span class='prof'>Prof_CCO_5</span>
+                    
+                </div>
+                </td></tr><tr><td class='slot-cell'>T1<br>T2</td><td style='min-width: 140px; vertical-align: top;'></td><td style='min-width: 140px; vertical-align: top;'></td><td style='min-width: 140px; vertical-align: top;'></td><td style='min-width: 140px; vertical-align: top;'></td><td style='min-width: 140px; vertical-align: top;'></td></tr><tr><td class='slot-cell'>T3<br>T4</td><td style='min-width: 140px; vertical-align: top;'>
+                <div class='aula-card '>
+                    
+                    <span class='materia'>CCO_P3_OB_04</span>
+                    <span class='prof'>Prof_CCO_12</span>
+                    
+                </div>
+                </td><td style='min-width: 140px; vertical-align: top;'>
+                <div class='aula-card '>
+                    
+                    <span class='materia'>CCO_P3_OB_05</span>
+                    <span class='prof'>Prof_CCO_13</span>
+                    
+                </div>
+                </td><td style='min-width: 140px; vertical-align: top;'>
+                <div class='aula-card '>
+                    
+                    <span class='materia'>CCO_P3_OB_05</span>
+                    <span class='prof'>Prof_CCO_13</span>
+                    
+                </div>
+                </td><td style='min-width: 140px; vertical-align: top;'>
+                <div class='aula-card '>
+                    
+                    <span class='materia'>CCO_P3_OB_03</span>
+                    <span class='prof'>Prof_CCO_5</span>
+                    
+                </div>
+                </td><td style='min-width: 140px; vertical-align: top;'></td></tr></tbody></table></div></div><div class="tab-pane fade " id="v-pills-CCO-4" role="tabpanel"><div class="table-responsive"><table class="table table-bordered mb-0"><thead><tr><th>Horário</th><th>SEG</th><th>TER</th><th>QUA</th><th>QUI</th><th>SEX</th></tr></thead><tbody><tr><td class='slot-cell'>M1<br>M2</td><td style='min-width: 140px; vertical-align: top;'>
+                <div class='aula-card '>
+                    
+                    <span class='materia'>CCO_P4_OB_04</span>
+                    <span class='prof'>Prof_CCO_10</span>
+                    <span class='lab'>Lab_Redes</span>
+                </div>
+                </td><td style='min-width: 140px; vertical-align: top;'></td><td style='min-width: 140px; vertical-align: top;'></td><td style='min-width: 140px; vertical-align: top;'></td><td style='min-width: 140px; vertical-align: top;'></td></tr><tr><td class='slot-cell'>M3<br>M4</td><td style='min-width: 140px; vertical-align: top;'>
+                <div class='aula-card '>
+                    
+                    <span class='materia'>CCO_P4_OB_05</span>
+                    <span class='prof'>Prof_CCO_7</span>
+                    <span class='lab'>Lab_Informatica_2</span>
+                </div>
+                </td><td style='min-width: 140px; vertical-align: top;'></td><td style='min-width: 140px; vertical-align: top;'></td><td style='min-width: 140px; vertical-align: top;'>
+                <div class='aula-card '>
+                    
+                    <span class='materia'>CCO_P4_OB_01</span>
+                    <span class='prof'>Prof_CCO_11</span>
+                    
+                </div>
+                </td><td style='min-width: 140px; vertical-align: top;'>
+                <div class='aula-card '>
+                    
+                    <span class='materia'>CCO_P4_OB_02</span>
+                    <span class='prof'>Prof_CCO_1</span>
+                    <span class='lab'>Lab_Informatica_1</span>
+                </div>
+                </td></tr><tr><td class='slot-cell'>T1<br>T2</td><td style='min-width: 140px; vertical-align: top;'></td><td style='min-width: 140px; vertical-align: top;'></td><td style='min-width: 140px; vertical-align: top;'></td><td style='min-width: 140px; vertical-align: top;'></td><td style='min-width: 140px; vertical-align: top;'></td></tr><tr><td class='slot-cell'>T3<br>T4</td><td style='min-width: 140px; vertical-align: top;'></td><td style='min-width: 140px; vertical-align: top;'>
+                <div class='aula-card '>
+                    
+                    <span class='materia'>CCO_P4_OB_04</span>
+                    <span class='prof'>Prof_CCO_10</span>
+                    <span class='lab'>Lab_Redes</span>
+                </div>
+                </td><td style='min-width: 140px; vertical-align: top;'>
+                <div class='aula-card '>
+                    
+                    <span class='materia'>CCO_P4_OB_03</span>
+                    <span class='prof'>Prof_CCO_3</span>
+                    <span class='lab'>Lab_Hardware</span>
+                </div>
+                </td><td style='min-width: 140px; vertical-align: top;'>
+                <div class='aula-card '>
+                    
+                    <span class='materia'>CCO_P4_OB_01</span>
+                    <span class='prof'>Prof_CCO_11</span>
+                    
+                </div>
+                </td><td style='min-width: 140px; vertical-align: top;'></td></tr></tbody></table></div></div><div class="tab-pane fade " id="v-pills-CCO-5" role="tabpanel"><div class="table-responsive"><table class="table table-bordered mb-0"><thead><tr><th>Horário</th><th>SEG</th><th>TER</th><th>QUA</th><th>QUI</th><th>SEX</th></tr></thead><tbody><tr><td class='slot-cell'>M1<br>M2</td><td style='min-width: 140px; vertical-align: top;'>
+                <div class='aula-card trilha-1'>
+                    <span class='badge-trilha bg-t1'>Trilha 1</span>
+                    <span class='materia'>CCO_P5_OP_01</span>
+                    <span class='prof'>Prof_CCO_11</span>
+                    
+                </div>
+                </td><td style='min-width: 140px; vertical-align: top;'></td><td style='min-width: 140px; vertical-align: top;'></td><td style='min-width: 140px; vertical-align: top;'></td><td style='min-width: 140px; vertical-align: top;'></td></tr><tr><td class='slot-cell'>M3<br>M4</td><td style='min-width: 140px; vertical-align: top;'>
+                <div class='aula-card trilha-1'>
+                    <span class='badge-trilha bg-t1'>Trilha 1</span>
+                    <span class='materia'>CCO_P5_OP_01</span>
+                    <span class='prof'>Prof_CCO_11</span>
+                    
+                </div>
+                
+                <div class='aula-card trilha-2'>
+                    <span class='badge-trilha bg-t2'>Trilha 2</span>
+                    <span class='materia'>CCO_P5_OP_02</span>
+                    <span class='prof'>Prof_CCO_3</span>
+                    <span class='lab'>Lab_Informatica_1</span>
+                </div>
+                </td><td style='min-width: 140px; vertical-align: top;'>
+                <div class='aula-card trilha-2'>
+                    <span class='badge-trilha bg-t2'>Trilha 2</span>
+                    <span class='materia'>CCO_P5_OP_02</span>
+                    <span class='prof'>Prof_CCO_3</span>
+                    <span class='lab'>Lab_Informatica_1</span>
+                </div>
+                </td><td style='min-width: 140px; vertical-align: top;'>
+                <div class='aula-card '>
+                    
+                    <span class='materia'>CCO_P5_OB_01</span>
+                    <span class='prof'>Prof_CCO_2</span>
+                    
+                </div>
+                </td><td style='min-width: 140px; vertical-align: top;'></td><td style='min-width: 140px; vertical-align: top;'></td></tr><tr><td class='slot-cell'>T1<br>T2</td><td style='min-width: 140px; vertical-align: top;'></td><td style='min-width: 140px; vertical-align: top;'></td><td style='min-width: 140px; vertical-align: top;'></td><td style='min-width: 140px; vertical-align: top;'></td><td style='min-width: 140px; vertical-align: top;'></td></tr><tr><td class='slot-cell'>T3<br>T4</td><td style='min-width: 140px; vertical-align: top;'>
+                <div class='aula-card '>
+                    
+                    <span class='materia'>CCO_P5_OB_03</span>
+                    <span class='prof'>Prof_CCO_7</span>
+                    <span class='lab'>Lab_Hardware</span>
+                </div>
+                </td><td style='min-width: 140px; vertical-align: top;'>
+                <div class='aula-card '>
+                    
+                    <span class='materia'>CCO_P5_OB_03</span>
+                    <span class='prof'>Prof_CCO_7</span>
+                    <span class='lab'>Lab_Hardware</span>
+                </div>
+                </td><td style='min-width: 140px; vertical-align: top;'>
+                <div class='aula-card '>
+                    
+                    <span class='materia'>CCO_P5_OB_02</span>
+                    <span class='prof'>Prof_CCO_1</span>
+                    
+                </div>
+                </td><td style='min-width: 140px; vertical-align: top;'>
+                <div class='aula-card '>
+                    
+                    <span class='materia'>CCO_P5_OB_02</span>
+                    <span class='prof'>Prof_CCO_1</span>
+                    
+                </div>
+                </td><td style='min-width: 140px; vertical-align: top;'></td></tr></tbody></table></div></div><div class="tab-pane fade " id="v-pills-CCO-6" role="tabpanel"><div class="table-responsive"><table class="table table-bordered mb-0"><thead><tr><th>Horário</th><th>SEG</th><th>TER</th><th>QUA</th><th>QUI</th><th>SEX</th></tr></thead><tbody><tr><td class='slot-cell'>M1<br>M2</td><td style='min-width: 140px; vertical-align: top;'></td><td style='min-width: 140px; vertical-align: top;'></td><td style='min-width: 140px; vertical-align: top;'></td><td style='min-width: 140px; vertical-align: top;'></td><td style='min-width: 140px; vertical-align: top;'></td></tr><tr><td class='slot-cell'>M3<br>M4</td><td style='min-width: 140px; vertical-align: top;'>
+                <div class='aula-card '>
+                    
+                    <span class='materia'>CCO_P6_OB_01</span>
+                    <span class='prof'>Prof_CCO_12</span>
+                    <span class='lab'>Lab_Redes</span>
+                </div>
+                </td><td style='min-width: 140px; vertical-align: top;'>
+                <div class='aula-card '>
+                    
+                    <span class='materia'>CCO_P6_OB_01</span>
+                    <span class='prof'>Prof_CCO_12</span>
+                    <span class='lab'>Lab_Redes</span>
+                </div>
+                </td><td style='min-width: 140px; vertical-align: top;'>
+                <div class='aula-card '>
+                    
+                    <span class='materia'>CCO_P6_OB_02</span>
+                    <span class='prof'>Prof_CCO_11</span>
+                    
+                </div>
+                </td><td style='min-width: 140px; vertical-align: top;'>
+                <div class='aula-card trilha-1'>
+                    <span class='badge-trilha bg-t1'>Trilha 1</span>
+                    <span class='materia'>CCO_P6_OP_01</span>
+                    <span class='prof'>Prof_CCO_14</span>
+                    
+                </div>
+                </td><td style='min-width: 140px; vertical-align: top;'>
+                <div class='aula-card trilha-2'>
+                    <span class='badge-trilha bg-t2'>Trilha 2</span>
+                    <span class='materia'>CCO_P6_OP_02</span>
+                    <span class='prof'>Prof_CCO_10</span>
+                    
+                </div>
+                
+                <div class='aula-card trilha-1'>
+                    <span class='badge-trilha bg-t1'>Trilha 1</span>
+                    <span class='materia'>CCO_P6_OP_01</span>
+                    <span class='prof'>Prof_CCO_14</span>
+                    
+                </div>
+                </td></tr><tr><td class='slot-cell'>T1<br>T2</td><td style='min-width: 140px; vertical-align: top;'></td><td style='min-width: 140px; vertical-align: top;'></td><td style='min-width: 140px; vertical-align: top;'></td><td style='min-width: 140px; vertical-align: top;'></td><td style='min-width: 140px; vertical-align: top;'></td></tr><tr><td class='slot-cell'>T3<br>T4</td><td style='min-width: 140px; vertical-align: top;'>
+                <div class='aula-card '>
+                    
+                    <span class='materia'>CCO_P6_OB_03</span>
+                    <span class='prof'>Prof_CCO_11</span>
+                    
+                </div>
+                </td><td style='min-width: 140px; vertical-align: top;'></td><td style='min-width: 140px; vertical-align: top;'>
+                <div class='aula-card trilha-2'>
+                    <span class='badge-trilha bg-t2'>Trilha 2</span>
+                    <span class='materia'>CCO_P6_OP_02</span>
+                    <span class='prof'>Prof_CCO_10</span>
+                    
+                </div>
+                </td><td style='min-width: 140px; vertical-align: top;'></td><td style='min-width: 140px; vertical-align: top;'></td></tr></tbody></table></div></div><div class="tab-pane fade " id="v-pills-CCO-7" role="tabpanel"><div class="table-responsive"><table class="table table-bordered mb-0"><thead><tr><th>Horário</th><th>SEG</th><th>TER</th><th>QUA</th><th>QUI</th><th>SEX</th></tr></thead><tbody><tr><td class='slot-cell'>M1<br>M2</td><td style='min-width: 140px; vertical-align: top;'></td><td style='min-width: 140px; vertical-align: top;'></td><td style='min-width: 140px; vertical-align: top;'></td><td style='min-width: 140px; vertical-align: top;'></td><td style='min-width: 140px; vertical-align: top;'></td></tr><tr><td class='slot-cell'>M3<br>M4</td><td style='min-width: 140px; vertical-align: top;'>
+                <div class='aula-card trilha-1'>
+                    <span class='badge-trilha bg-t1'>Trilha 1</span>
+                    <span class='materia'>CCO_P7_OP_01</span>
+                    <span class='prof'>Prof_CCO_4</span>
+                    
+                </div>
+                </td><td style='min-width: 140px; vertical-align: top;'>
+                <div class='aula-card '>
+                    
+                    <span class='materia'>CCO_P7_OB_01</span>
+                    <span class='prof'>Prof_CCO_4</span>
+                    <span class='lab'>Lab_Hardware</span>
+                </div>
+                </td><td style='min-width: 140px; vertical-align: top;'>
+                <div class='aula-card '>
+                    
+                    <span class='materia'>CCO_P7_OB_02</span>
+                    <span class='prof'>Prof_CCO_10</span>
+                    
+                </div>
+                </td><td style='min-width: 140px; vertical-align: top;'>
+                <div class='aula-card '>
+                    
+                    <span class='materia'>CCO_P7_OB_02</span>
+                    <span class='prof'>Prof_CCO_10</span>
+                    
+                </div>
+                </td><td style='min-width: 140px; vertical-align: top;'>
+                <div class='aula-card '>
+                    
+                    <span class='materia'>CCO_P7_OB_01</span>
+                    <span class='prof'>Prof_CCO_4</span>
+                    <span class='lab'>Lab_Hardware</span>
+                </div>
+                </td></tr><tr><td class='slot-cell'>T1<br>T2</td><td style='min-width: 140px; vertical-align: top;'></td><td style='min-width: 140px; vertical-align: top;'></td><td style='min-width: 140px; vertical-align: top;'></td><td style='min-width: 140px; vertical-align: top;'></td><td style='min-width: 140px; vertical-align: top;'></td></tr><tr><td class='slot-cell'>T3<br>T4</td><td style='min-width: 140px; vertical-align: top;'>
+                <div class='aula-card trilha-1'>
+                    <span class='badge-trilha bg-t1'>Trilha 1</span>
+                    <span class='materia'>CCO_P7_OP_01</span>
+                    <span class='prof'>Prof_CCO_4</span>
+                    
+                </div>
+                
+                <div class='aula-card trilha-2'>
+                    <span class='badge-trilha bg-t2'>Trilha 2</span>
+                    <span class='materia'>CCO_P7_OP_02</span>
+                    <span class='prof'>Prof_CCO_3</span>
+                    
+                </div>
+                </td><td style='min-width: 140px; vertical-align: top;'>
+                <div class='aula-card trilha-2'>
+                    <span class='badge-trilha bg-t2'>Trilha 2</span>
+                    <span class='materia'>CCO_P7_OP_02</span>
+                    <span class='prof'>Prof_CCO_3</span>
+                    
+                </div>
+                </td><td style='min-width: 140px; vertical-align: top;'>
+                <div class='aula-card '>
+                    
+                    <span class='materia'>CCO_P7_OB_03</span>
+                    <span class='prof'>Prof_CCO_5</span>
+                    
+                </div>
+                </td><td style='min-width: 140px; vertical-align: top;'></td><td style='min-width: 140px; vertical-align: top;'></td></tr></tbody></table></div></div><div class="tab-pane fade " id="v-pills-CCO-8" role="tabpanel"><div class="table-responsive"><table class="table table-bordered mb-0"><thead><tr><th>Horário</th><th>SEG</th><th>TER</th><th>QUA</th><th>QUI</th><th>SEX</th></tr></thead><tbody><tr><td class='slot-cell'>M1<br>M2</td><td style='min-width: 140px; vertical-align: top;'></td><td style='min-width: 140px; vertical-align: top;'></td><td style='min-width: 140px; vertical-align: top;'></td><td style='min-width: 140px; vertical-align: top;'></td><td style='min-width: 140px; vertical-align: top;'></td></tr><tr><td class='slot-cell'>M3<br>M4</td><td style='min-width: 140px; vertical-align: top;'>
+                <div class='aula-card '>
+                    
+                    <span class='materia'>CCO_P8_OB_03</span>
+                    <span class='prof'>Prof_CCO_10</span>
+                    <span class='lab'>Lab_Hardware</span>
+                </div>
+                </td><td style='min-width: 140px; vertical-align: top;'>
+                <div class='aula-card '>
+                    
+                    <span class='materia'>CCO_P8_OB_01</span>
+                    <span class='prof'>Prof_CCO_5</span>
+                    
+                </div>
+                </td><td style='min-width: 140px; vertical-align: top;'>
+                <div class='aula-card trilha-1'>
+                    <span class='badge-trilha bg-t1'>Trilha 1</span>
+                    <span class='materia'>CCO_P8_OP_02</span>
+                    <span class='prof'>Prof_CCO_7</span>
+                    <span class='lab'>Lab_Informatica_2</span>
+                </div>
+                
+                <div class='aula-card trilha-2'>
+                    <span class='badge-trilha bg-t2'>Trilha 2</span>
+                    <span class='materia'>CCO_P8_OP_01</span>
+                    <span class='prof'>Prof_CCO_6</span>
+                    
+                </div>
+                </td><td style='min-width: 140px; vertical-align: top;'>
+                <div class='aula-card '>
+                    
+                    <span class='materia'>CCO_P8_OB_01</span>
+                    <span class='prof'>Prof_CCO_5</span>
+                    
+                </div>
+                </td><td style='min-width: 140px; vertical-align: top;'>
+                <div class='aula-card trilha-1'>
+                    <span class='badge-trilha bg-t1'>Trilha 1</span>
+                    <span class='materia'>CCO_P8_OP_02</span>
+                    <span class='prof'>Prof_CCO_7</span>
+                    <span class='lab'>Lab_Informatica_2</span>
+                </div>
+                
+                <div class='aula-card trilha-2'>
+                    <span class='badge-trilha bg-t2'>Trilha 2</span>
+                    <span class='materia'>CCO_P8_OP_01</span>
+                    <span class='prof'>Prof_CCO_6</span>
+                    
+                </div>
+                </td></tr><tr><td class='slot-cell'>T1<br>T2</td><td style='min-width: 140px; vertical-align: top;'></td><td style='min-width: 140px; vertical-align: top;'></td><td style='min-width: 140px; vertical-align: top;'></td><td style='min-width: 140px; vertical-align: top;'></td><td style='min-width: 140px; vertical-align: top;'></td></tr><tr><td class='slot-cell'>T3<br>T4</td><td style='min-width: 140px; vertical-align: top;'></td><td style='min-width: 140px; vertical-align: top;'>
+                <div class='aula-card '>
+                    
+                    <span class='materia'>CCO_P8_OB_02</span>
+                    <span class='prof'>Prof_CCO_11</span>
+                    
+                </div>
+                </td><td style='min-width: 140px; vertical-align: top;'>
+                <div class='aula-card '>
+                    
+                    <span class='materia'>CCO_P8_OB_02</span>
+                    <span class='prof'>Prof_CCO_11</span>
+                    
+                </div>
+                </td><td style='min-width: 140px; vertical-align: top;'></td><td style='min-width: 140px; vertical-align: top;'></td></tr></tbody></table></div></div></div></div></div><div class="tab-pane fade " id="SIN-pane" role="tabpanel"><div class="d-flex align-items-start mt-3"><div class="nav flex-column nav-pills me-3" role="tablist" aria-orientation="vertical"><button class="nav-link active text-start" id="v-pills-SIN-1-tab" data-bs-toggle="pill" data-bs-target="#v-pills-SIN-1" type="button" role="tab">Periodo 1</button><button class="nav-link  text-start" id="v-pills-SIN-2-tab" data-bs-toggle="pill" data-bs-target="#v-pills-SIN-2" type="button" role="tab">Periodo 2</button><button class="nav-link  text-start" id="v-pills-SIN-3-tab" data-bs-toggle="pill" data-bs-target="#v-pills-SIN-3" type="button" role="tab">Periodo 3</button><button class="nav-link  text-start" id="v-pills-SIN-4-tab" data-bs-toggle="pill" data-bs-target="#v-pills-SIN-4" type="button" role="tab">Periodo 4</button><button class="nav-link  text-start" id="v-pills-SIN-5-tab" data-bs-toggle="pill" data-bs-target="#v-pills-SIN-5" type="button" role="tab">Periodo 5</button><button class="nav-link  text-start" id="v-pills-SIN-6-tab" data-bs-toggle="pill" data-bs-target="#v-pills-SIN-6" type="button" role="tab">Periodo 6</button><button class="nav-link  text-start" id="v-pills-SIN-7-tab" data-bs-toggle="pill" data-bs-target="#v-pills-SIN-7" type="button" role="tab">Periodo 7</button><button class="nav-link  text-start" id="v-pills-SIN-8-tab" data-bs-toggle="pill" data-bs-target="#v-pills-SIN-8" type="button" role="tab">Periodo 8</button><button class="nav-link  text-start" id="v-pills-SIN-9-tab" data-bs-toggle="pill" data-bs-target="#v-pills-SIN-9" type="button" role="tab">Periodo 9</button></div><div class="tab-content w-100"><div class="tab-pane fade show active" id="v-pills-SIN-1" role="tabpanel"><div class="table-responsive"><table class="table table-bordered mb-0"><thead><tr><th>Horário</th><th>SEG</th><th>TER</th><th>QUA</th><th>QUI</th><th>SEX</th></tr></thead><tbody><tr><td class='slot-cell'>N1<br>N2</td><td style='min-width: 140px; vertical-align: top;'>
+                <div class='aula-card '>
+                    
+                    <span class='materia'>SIN_P1_OB_03</span>
+                    <span class='prof'>Prof_SIN_8</span>
+                    
+                </div>
+                </td><td style='min-width: 140px; vertical-align: top;'></td><td style='min-width: 140px; vertical-align: top;'>
+                <div class='aula-card '>
+                    
+                    <span class='materia'>SIN_P1_OB_01</span>
+                    <span class='prof'>Prof_SIN_12</span>
+                    <span class='lab'>Lab_Hardware</span>
+                </div>
+                </td><td style='min-width: 140px; vertical-align: top;'>
+                <div class='aula-card '>
+                    
+                    <span class='materia'>SIN_P1_OB_05</span>
+                    <span class='prof'>Prof_SIN_9</span>
+                    
+                </div>
+                </td><td style='min-width: 140px; vertical-align: top;'>
+                <div class='aula-card '>
+                    
+                    <span class='materia'>SIN_P1_OB_05</span>
+                    <span class='prof'>Prof_SIN_9</span>
+                    
+                </div>
+                </td></tr><tr><td class='slot-cell'>N3<br>N4</td><td style='min-width: 140px; vertical-align: top;'>
+                <div class='aula-card '>
+                    
+                    <span class='materia'>SIN_P1_OB_02</span>
+                    <span class='prof'>Prof_SIN_14</span>
+                    <span class='lab'>Lab_Redes</span>
+                </div>
+                </td><td style='min-width: 140px; vertical-align: top;'>
+                <div class='aula-card '>
+                    
+                    <span class='materia'>SIN_P1_OB_02</span>
+                    <span class='prof'>Prof_SIN_14</span>
+                    <span class='lab'>Lab_Redes</span>
+                </div>
+                </td><td style='min-width: 140px; vertical-align: top;'></td><td style='min-width: 140px; vertical-align: top;'>
+                <div class='aula-card '>
+                    
+                    <span class='materia'>SIN_P1_OB_04</span>
+                    <span class='prof'>Prof_SIN_3</span>
+                    <span class='lab'>Lab_Redes</span>
+                </div>
+                </td><td style='min-width: 140px; vertical-align: top;'>
+                <div class='aula-card '>
+                    
+                    <span class='materia'>SIN_P1_OB_04</span>
+                    <span class='prof'>Prof_SIN_3</span>
+                    <span class='lab'>Lab_Redes</span>
+                </div>
+                </td></tr><tr><td class='slot-cell'>N3 - N5<br>(3h)</td><td style='min-width: 140px; vertical-align: top;'></td><td style='min-width: 140px; vertical-align: top;'></td><td style='min-width: 140px; vertical-align: top;'></td><td style='min-width: 140px; vertical-align: top;'></td><td style='min-width: 140px; vertical-align: top;'></td></tr></tbody></table></div></div><div class="tab-pane fade " id="v-pills-SIN-2" role="tabpanel"><div class="table-responsive"><table class="table table-bordered mb-0"><thead><tr><th>Horário</th><th>SEG</th><th>TER</th><th>QUA</th><th>QUI</th><th>SEX</th></tr></thead><tbody><tr><td class='slot-cell'>N1<br>N2</td><td style='min-width: 140px; vertical-align: top;'>
+                <div class='aula-card '>
+                    
+                    <span class='materia'>SIN_P2_OB_03</span>
+                    <span class='prof'>Prof_SIN_6</span>
+                    
+                </div>
+                </td><td style='min-width: 140px; vertical-align: top;'>
+                <div class='aula-card '>
+                    
+                    <span class='materia'>SIN_P2_OB_05</span>
+                    <span class='prof'>Prof_SIN_6</span>
+                    
+                </div>
+                </td><td style='min-width: 140px; vertical-align: top;'>
+                <div class='aula-card '>
+                    
+                    <span class='materia'>SIN_P2_OB_05</span>
+                    <span class='prof'>Prof_SIN_6</span>
+                    
+                </div>
+                </td><td style='min-width: 140px; vertical-align: top;'>
+                <div class='aula-card '>
+                    
+                    <span class='materia'>SIN_P2_OB_01</span>
+                    <span class='prof'>Prof_SIN_10</span>
+                    
+                </div>
+                </td><td style='min-width: 140px; vertical-align: top;'>
+                <div class='aula-card '>
+                    
+                    <span class='materia'>SIN_P2_OB_04</span>
+                    <span class='prof'>Prof_SIN_1</span>
+                    <span class='lab'>Lab_Redes</span>
+                </div>
+                </td></tr><tr><td class='slot-cell'>N3<br>N4</td><td style='min-width: 140px; vertical-align: top;'>
+                <div class='aula-card '>
+                    
+                    <span class='materia'>SIN_P2_OB_03</span>
+                    <span class='prof'>Prof_SIN_6</span>
+                    
+                </div>
+                </td><td style='min-width: 140px; vertical-align: top;'></td><td style='min-width: 140px; vertical-align: top;'>
+                <div class='aula-card '>
+                    
+                    <span class='materia'>SIN_P2_OB_04</span>
+                    <span class='prof'>Prof_SIN_1</span>
+                    <span class='lab'>Lab_Redes</span>
+                </div>
+                </td><td style='min-width: 140px; vertical-align: top;'></td><td style='min-width: 140px; vertical-align: top;'></td></tr><tr><td class='slot-cell'>N3 - N5<br>(3h)</td><td style='min-width: 140px; vertical-align: top;'></td><td style='min-width: 140px; vertical-align: top;'>
+                <div class='aula-card '>
+                    
+                    <span class='materia'>SIN_P2_OB_02</span>
+                    <span class='prof'>Prof_SIN_9</span>
+                    <span class='lab'>Lab_Informatica_2</span>
+                </div>
+                </td><td style='min-width: 140px; vertical-align: top;'></td><td style='min-width: 140px; vertical-align: top;'></td><td style='min-width: 140px; vertical-align: top;'></td></tr></tbody></table></div></div><div class="tab-pane fade " id="v-pills-SIN-3" role="tabpanel"><div class="table-responsive"><table class="table table-bordered mb-0"><thead><tr><th>Horário</th><th>SEG</th><th>TER</th><th>QUA</th><th>QUI</th><th>SEX</th></tr></thead><tbody><tr><td class='slot-cell'>N1<br>N2</td><td style='min-width: 140px; vertical-align: top;'>
+                <div class='aula-card '>
+                    
+                    <span class='materia'>SIN_P3_OB_01</span>
+                    <span class='prof'>Prof_SIN_13</span>
+                    
+                </div>
+                </td><td style='min-width: 140px; vertical-align: top;'>
+                <div class='aula-card '>
+                    
+                    <span class='materia'>SIN_P3_OB_04</span>
+                    <span class='prof'>Prof_SIN_1</span>
+                    <span class='lab'>Lab_Redes</span>
+                </div>
+                </td><td style='min-width: 140px; vertical-align: top;'>
+                <div class='aula-card '>
+                    
+                    <span class='materia'>SIN_P3_OB_04</span>
+                    <span class='prof'>Prof_SIN_1</span>
+                    <span class='lab'>Lab_Redes</span>
+                </div>
+                </td><td style='min-width: 140px; vertical-align: top;'>
+                <div class='aula-card '>
+                    
+                    <span class='materia'>SIN_P3_OB_05</span>
+                    <span class='prof'>Prof_SIN_12</span>
+                    <span class='lab'>Lab_Informatica_2</span>
+                </div>
+                </td><td style='min-width: 140px; vertical-align: top;'>
+                <div class='aula-card '>
+                    
+                    <span class='materia'>SIN_P3_OB_02</span>
+                    <span class='prof'>Prof_SIN_10</span>
+                    
+                </div>
+                </td></tr><tr><td class='slot-cell'>N3<br>N4</td><td style='min-width: 140px; vertical-align: top;'>
+                <div class='aula-card '>
+                    
+                    <span class='materia'>SIN_P3_OB_02</span>
+                    <span class='prof'>Prof_SIN_10</span>
+                    
+                </div>
+                </td><td style='min-width: 140px; vertical-align: top;'>
+                <div class='aula-card '>
+                    
+                    <span class='materia'>SIN_P3_OB_05</span>
+                    <span class='prof'>Prof_SIN_12</span>
+                    <span class='lab'>Lab_Informatica_2</span>
+                </div>
+                </td><td style='min-width: 140px; vertical-align: top;'>
+                <div class='aula-card '>
+                    
+                    <span class='materia'>SIN_P3_OB_03</span>
+                    <span class='prof'>Prof_SIN_7</span>
+                    
+                </div>
+                </td><td style='min-width: 140px; vertical-align: top;'>
+                <div class='aula-card '>
+                    
+                    <span class='materia'>SIN_P3_OB_03</span>
+                    <span class='prof'>Prof_SIN_7</span>
+                    
+                </div>
+                </td><td style='min-width: 140px; vertical-align: top;'></td></tr><tr><td class='slot-cell'>N3 - N5<br>(3h)</td><td style='min-width: 140px; vertical-align: top;'></td><td style='min-width: 140px; vertical-align: top;'></td><td style='min-width: 140px; vertical-align: top;'></td><td style='min-width: 140px; vertical-align: top;'></td><td style='min-width: 140px; vertical-align: top;'></td></tr></tbody></table></div></div><div class="tab-pane fade " id="v-pills-SIN-4" role="tabpanel"><div class="table-responsive"><table class="table table-bordered mb-0"><thead><tr><th>Horário</th><th>SEG</th><th>TER</th><th>QUA</th><th>QUI</th><th>SEX</th></tr></thead><tbody><tr><td class='slot-cell'>N1<br>N2</td><td style='min-width: 140px; vertical-align: top;'>
+                <div class='aula-card '>
+                    
+                    <span class='materia'>SIN_P4_OB_04</span>
+                    <span class='prof'>Prof_SIN_5</span>
+                    
+                </div>
+                </td><td style='min-width: 140px; vertical-align: top;'>
+                <div class='aula-card '>
+                    
+                    <span class='materia'>SIN_P4_OB_01</span>
+                    <span class='prof'>Prof_SIN_4</span>
+                    
+                </div>
+                </td><td style='min-width: 140px; vertical-align: top;'></td><td style='min-width: 140px; vertical-align: top;'>
+                <div class='aula-card '>
+                    
+                    <span class='materia'>SIN_P4_OB_03</span>
+                    <span class='prof'>Prof_SIN_4</span>
+                    
+                </div>
+                </td><td style='min-width: 140px; vertical-align: top;'></td></tr><tr><td class='slot-cell'>N3<br>N4</td><td style='min-width: 140px; vertical-align: top;'>
+                <div class='aula-card '>
+                    
+                    <span class='materia'>SIN_P4_OB_01</span>
+                    <span class='prof'>Prof_SIN_4</span>
+                    
+                </div>
+                </td><td style='min-width: 140px; vertical-align: top;'>
+                <div class='aula-card '>
+                    
+                    <span class='materia'>SIN_P4_OB_04</span>
+                    <span class='prof'>Prof_SIN_5</span>
+                    
+                </div>
+                </td><td style='min-width: 140px; vertical-align: top;'>
+                <div class='aula-card '>
+                    
+                    <span class='materia'>SIN_P4_OB_03</span>
+                    <span class='prof'>Prof_SIN_4</span>
+                    
+                </div>
+                </td><td style='min-width: 140px; vertical-align: top;'></td><td style='min-width: 140px; vertical-align: top;'></td></tr><tr><td class='slot-cell'>N3 - N5<br>(3h)</td><td style='min-width: 140px; vertical-align: top;'></td><td style='min-width: 140px; vertical-align: top;'></td><td style='min-width: 140px; vertical-align: top;'></td><td style='min-width: 140px; vertical-align: top;'>
+                <div class='aula-card '>
+                    
+                    <span class='materia'>SIN_P4_OB_02</span>
+                    <span class='prof'>Prof_SIN_6</span>
+                    
+                </div>
+                </td><td style='min-width: 140px; vertical-align: top;'>
+                <div class='aula-card '>
+                    
+                    <span class='materia'>SIN_P4_OB_05</span>
+                    <span class='prof'>Prof_SIN_13</span>
+                    
+                </div>
+                </td></tr></tbody></table></div></div><div class="tab-pane fade " id="v-pills-SIN-5" role="tabpanel"><div class="table-responsive"><table class="table table-bordered mb-0"><thead><tr><th>Horário</th><th>SEG</th><th>TER</th><th>QUA</th><th>QUI</th><th>SEX</th></tr></thead><tbody><tr><td class='slot-cell'>N1<br>N2</td><td style='min-width: 140px; vertical-align: top;'>
+                <div class='aula-card trilha-1'>
+                    <span class='badge-trilha bg-t1'>Trilha 1</span>
+                    <span class='materia'>SIN_P5_OP_02</span>
+                    <span class='prof'>Prof_SIN_10</span>
+                    <span class='lab'>Lab_Hardware</span>
+                </div>
+                </td><td style='min-width: 140px; vertical-align: top;'>
+                <div class='aula-card trilha-1'>
+                    <span class='badge-trilha bg-t1'>Trilha 1</span>
+                    <span class='materia'>SIN_P5_OP_02</span>
+                    <span class='prof'>Prof_SIN_10</span>
+                    <span class='lab'>Lab_Hardware</span>
+                </div>
+                </td><td style='min-width: 140px; vertical-align: top;'>
+                <div class='aula-card '>
+                    
+                    <span class='materia'>SIN_P5_OB_01</span>
+                    <span class='prof'>Prof_SIN_8</span>
+                    
+                </div>
+                </td><td style='min-width: 140px; vertical-align: top;'>
+                <div class='aula-card '>
+                    
+                    <span class='materia'>SIN_P5_OB_02</span>
+                    <span class='prof'>Prof_SIN_2</span>
+                    
+                </div>
+                </td><td style='min-width: 140px; vertical-align: top;'>
+                <div class='aula-card trilha-2'>
+                    <span class='badge-trilha bg-t2'>Trilha 2</span>
+                    <span class='materia'>SIN_P5_OP_01</span>
+                    <span class='prof'>Prof_SIN_5</span>
+                    <span class='lab'>Lab_Hardware</span>
+                </div>
+                </td></tr><tr><td class='slot-cell'>N3<br>N4</td><td style='min-width: 140px; vertical-align: top;'>
+                <div class='aula-card trilha-2'>
+                    <span class='badge-trilha bg-t2'>Trilha 2</span>
+                    <span class='materia'>SIN_P5_OP_01</span>
+                    <span class='prof'>Prof_SIN_5</span>
+                    <span class='lab'>Lab_Hardware</span>
+                </div>
+                </td><td style='min-width: 140px; vertical-align: top;'></td><td style='min-width: 140px; vertical-align: top;'></td><td style='min-width: 140px; vertical-align: top;'></td><td style='min-width: 140px; vertical-align: top;'></td></tr><tr><td class='slot-cell'>N3 - N5<br>(3h)</td><td style='min-width: 140px; vertical-align: top;'></td><td style='min-width: 140px; vertical-align: top;'></td><td style='min-width: 140px; vertical-align: top;'>
+                <div class='aula-card '>
+                    
+                    <span class='materia'>SIN_P5_OB_03</span>
+                    <span class='prof'>Prof_SIN_5</span>
+                    
+                </div>
+                </td><td style='min-width: 140px; vertical-align: top;'></td><td style='min-width: 140px; vertical-align: top;'></td></tr></tbody></table></div></div><div class="tab-pane fade " id="v-pills-SIN-6" role="tabpanel"><div class="table-responsive"><table class="table table-bordered mb-0"><thead><tr><th>Horário</th><th>SEG</th><th>TER</th><th>QUA</th><th>QUI</th><th>SEX</th></tr></thead><tbody><tr><td class='slot-cell'>N1<br>N2</td><td style='min-width: 140px; vertical-align: top;'></td><td style='min-width: 140px; vertical-align: top;'>
+                <div class='aula-card '>
+                    
+                    <span class='materia'>SIN_P6_OB_03</span>
+                    <span class='prof'>Prof_SIN_5</span>
+                    
+                </div>
+                </td><td style='min-width: 140px; vertical-align: top;'>
+                <div class='aula-card '>
+                    
+                    <span class='materia'>SIN_P6_OB_02</span>
+                    <span class='prof'>Prof_SIN_10</span>
+                    
+                </div>
+                </td><td style='min-width: 140px; vertical-align: top;'></td><td style='min-width: 140px; vertical-align: top;'>
+                <div class='aula-card trilha-1'>
+                    <span class='badge-trilha bg-t1'>Trilha 1</span>
+                    <span class='materia'>SIN_P6_OP_02</span>
+                    <span class='prof'>Prof_SIN_4</span>
+                    
+                </div>
+                </td></tr><tr><td class='slot-cell'>N3<br>N4</td><td style='min-width: 140px; vertical-align: top;'>
+                <div class='aula-card '>
+                    
+                    <span class='materia'>SIN_P6_OB_01</span>
+                    <span class='prof'>Prof_SIN_9</span>
+                    <span class='lab'>Lab_Informatica_2</span>
+                </div>
+                </td><td style='min-width: 140px; vertical-align: top;'>
+                <div class='aula-card trilha-1'>
+                    <span class='badge-trilha bg-t1'>Trilha 1</span>
+                    <span class='materia'>SIN_P6_OP_02</span>
+                    <span class='prof'>Prof_SIN_4</span>
+                    
+                </div>
+                </td><td style='min-width: 140px; vertical-align: top;'></td><td style='min-width: 140px; vertical-align: top;'></td><td style='min-width: 140px; vertical-align: top;'></td></tr><tr><td class='slot-cell'>N3 - N5<br>(3h)</td><td style='min-width: 140px; vertical-align: top;'></td><td style='min-width: 140px; vertical-align: top;'></td><td style='min-width: 140px; vertical-align: top;'>
+                <div class='aula-card trilha-2'>
+                    <span class='badge-trilha bg-t2'>Trilha 2</span>
+                    <span class='materia'>SIN_P6_OP_01</span>
+                    <span class='prof'>Prof_SIN_8</span>
+                    
+                </div>
+                </td><td style='min-width: 140px; vertical-align: top;'></td><td style='min-width: 140px; vertical-align: top;'></td></tr></tbody></table></div></div><div class="tab-pane fade " id="v-pills-SIN-7" role="tabpanel"><div class="table-responsive"><table class="table table-bordered mb-0"><thead><tr><th>Horário</th><th>SEG</th><th>TER</th><th>QUA</th><th>QUI</th><th>SEX</th></tr></thead><tbody><tr><td class='slot-cell'>N1<br>N2</td><td style='min-width: 140px; vertical-align: top;'>
+                <div class='aula-card trilha-1'>
+                    <span class='badge-trilha bg-t1'>Trilha 1</span>
+                    <span class='materia'>SIN_P7_OP_02</span>
+                    <span class='prof'>Prof_SIN_4</span>
+                    <span class='lab'>Lab_Informatica_2</span>
+                </div>
+                </td><td style='min-width: 140px; vertical-align: top;'>
+                <div class='aula-card '>
+                    
+                    <span class='materia'>SIN_P7_OB_01</span>
+                    <span class='prof'>Prof_SIN_13</span>
+                    
+                </div>
+                </td><td style='min-width: 140px; vertical-align: top;'>
+                <div class='aula-card trilha-1'>
+                    <span class='badge-trilha bg-t1'>Trilha 1</span>
+                    <span class='materia'>SIN_P7_OP_02</span>
+                    <span class='prof'>Prof_SIN_4</span>
+                    <span class='lab'>Lab_Informatica_2</span>
+                </div>
+                </td><td style='min-width: 140px; vertical-align: top;'>
+                <div class='aula-card '>
+                    
+                    <span class='materia'>SIN_P7_OB_03</span>
+                    <span class='prof'>Prof_SIN_8</span>
+                    <span class='lab'>Lab_Hardware</span>
+                </div>
+                </td><td style='min-width: 140px; vertical-align: top;'>
+                <div class='aula-card '>
+                    
+                    <span class='materia'>SIN_P7_OB_02</span>
+                    <span class='prof'>Prof_SIN_7</span>
+                    <span class='lab'>Lab_Informatica_1</span>
+                </div>
+                </td></tr><tr><td class='slot-cell'>N3<br>N4</td><td style='min-width: 140px; vertical-align: top;'></td><td style='min-width: 140px; vertical-align: top;'>
+                <div class='aula-card '>
+                    
+                    <span class='materia'>SIN_P7_OB_03</span>
+                    <span class='prof'>Prof_SIN_8</span>
+                    <span class='lab'>Lab_Hardware</span>
+                </div>
+                </td><td style='min-width: 140px; vertical-align: top;'></td><td style='min-width: 140px; vertical-align: top;'></td><td style='min-width: 140px; vertical-align: top;'></td></tr><tr><td class='slot-cell'>N3 - N5<br>(3h)</td><td style='min-width: 140px; vertical-align: top;'></td><td style='min-width: 140px; vertical-align: top;'></td><td style='min-width: 140px; vertical-align: top;'></td><td style='min-width: 140px; vertical-align: top;'></td><td style='min-width: 140px; vertical-align: top;'>
+                <div class='aula-card trilha-2'>
+                    <span class='badge-trilha bg-t2'>Trilha 2</span>
+                    <span class='materia'>SIN_P7_OP_01</span>
+                    <span class='prof'>Prof_SIN_6</span>
+                    
+                </div>
+                </td></tr></tbody></table></div></div><div class="tab-pane fade " id="v-pills-SIN-8" role="tabpanel"><div class="table-responsive"><table class="table table-bordered mb-0"><thead><tr><th>Horário</th><th>SEG</th><th>TER</th><th>QUA</th><th>QUI</th><th>SEX</th></tr></thead><tbody><tr><td class='slot-cell'>N1<br>N2</td><td style='min-width: 140px; vertical-align: top;'>
+                <div class='aula-card '>
+                    
+                    <span class='materia'>SIN_P8_OB_03</span>
+                    <span class='prof'>Prof_SIN_9</span>
+                    
+                </div>
+                </td><td style='min-width: 140px; vertical-align: top;'>
+                <div class='aula-card '>
+                    
+                    <span class='materia'>SIN_P8_OB_01</span>
+                    <span class='prof'>Prof_SIN_9</span>
+                    
+                </div>
+                </td><td style='min-width: 140px; vertical-align: top;'>
+                <div class='aula-card '>
+                    
+                    <span class='materia'>SIN_P8_OB_03</span>
+                    <span class='prof'>Prof_SIN_9</span>
+                    
+                </div>
+                </td><td style='min-width: 140px; vertical-align: top;'>
+                <div class='aula-card trilha-1'>
+                    <span class='badge-trilha bg-t1'>Trilha 1</span>
+                    <span class='materia'>SIN_P8_OP_01</span>
+                    <span class='prof'>Prof_SIN_6</span>
+                    
+                </div>
+                
+                <div class='aula-card trilha-2'>
+                    <span class='badge-trilha bg-t2'>Trilha 2</span>
+                    <span class='materia'>SIN_P8_OP_02</span>
+                    <span class='prof'>Prof_SIN_1</span>
+                    <span class='lab'>Lab_Informatica_1</span>
+                </div>
+                </td><td style='min-width: 140px; vertical-align: top;'>
+                <div class='aula-card '>
+                    
+                    <span class='materia'>SIN_P8_OB_02</span>
+                    <span class='prof'>Prof_SIN_6</span>
+                    
+                </div>
+                </td></tr><tr><td class='slot-cell'>N3<br>N4</td><td style='min-width: 140px; vertical-align: top;'>
+                <div class='aula-card trilha-2'>
+                    <span class='badge-trilha bg-t2'>Trilha 2</span>
+                    <span class='materia'>SIN_P8_OP_02</span>
+                    <span class='prof'>Prof_SIN_1</span>
+                    <span class='lab'>Lab_Informatica_1</span>
+                </div>
+                </td><td style='min-width: 140px; vertical-align: top;'>
+                <div class='aula-card trilha-1'>
+                    <span class='badge-trilha bg-t1'>Trilha 1</span>
+                    <span class='materia'>SIN_P8_OP_01</span>
+                    <span class='prof'>Prof_SIN_6</span>
+                    
+                </div>
+                </td><td style='min-width: 140px; vertical-align: top;'>
+                <div class='aula-card '>
+                    
+                    <span class='materia'>SIN_P8_OB_02</span>
+                    <span class='prof'>Prof_SIN_6</span>
+                    
+                </div>
+                </td><td style='min-width: 140px; vertical-align: top;'></td><td style='min-width: 140px; vertical-align: top;'></td></tr><tr><td class='slot-cell'>N3 - N5<br>(3h)</td><td style='min-width: 140px; vertical-align: top;'></td><td style='min-width: 140px; vertical-align: top;'></td><td style='min-width: 140px; vertical-align: top;'></td><td style='min-width: 140px; vertical-align: top;'></td><td style='min-width: 140px; vertical-align: top;'></td></tr></tbody></table></div></div><div class="tab-pane fade " id="v-pills-SIN-9" role="tabpanel"><div class="table-responsive"><table class="table table-bordered mb-0"><thead><tr><th>Horário</th><th>SEG</th><th>TER</th><th>QUA</th><th>QUI</th><th>SEX</th></tr></thead><tbody><tr><td class='slot-cell'>N1<br>N2</td><td style='min-width: 140px; vertical-align: top;'>
+                <div class='aula-card trilha-1'>
+                    <span class='badge-trilha bg-t1'>Trilha 1</span>
+                    <span class='materia'>SIN_P9_OP_02</span>
+                    <span class='prof'>Prof_SIN_1</span>
+                    
+                </div>
+                </td><td style='min-width: 140px; vertical-align: top;'>
+                <div class='aula-card '>
+                    
+                    <span class='materia'>SIN_P9_OB_03</span>
+                    <span class='prof'>Prof_SIN_14</span>
+                    <span class='lab'>Lab_Informatica_2</span>
+                </div>
+                </td><td style='min-width: 140px; vertical-align: top;'>
+                <div class='aula-card '>
+                    
+                    <span class='materia'>SIN_P9_OB_02</span>
+                    <span class='prof'>Prof_SIN_5</span>
+                    
+                </div>
+                </td><td style='min-width: 140px; vertical-align: top;'>
+                <div class='aula-card '>
+                    
+                    <span class='materia'>SIN_P9_OB_02</span>
+                    <span class='prof'>Prof_SIN_5</span>
+                    
+                </div>
+                </td><td style='min-width: 140px; vertical-align: top;'>
+                <div class='aula-card '>
+                    
+                    <span class='materia'>SIN_P9_OB_03</span>
+                    <span class='prof'>Prof_SIN_14</span>
+                    <span class='lab'>Lab_Informatica_2</span>
+                </div>
+                </td></tr><tr><td class='slot-cell'>N3<br>N4</td><td style='min-width: 140px; vertical-align: top;'></td><td style='min-width: 140px; vertical-align: top;'>
+                <div class='aula-card trilha-1'>
+                    <span class='badge-trilha bg-t1'>Trilha 1</span>
+                    <span class='materia'>SIN_P9_OP_02</span>
+                    <span class='prof'>Prof_SIN_1</span>
+                    
+                </div>
+                </td><td style='min-width: 140px; vertical-align: top;'></td><td style='min-width: 140px; vertical-align: top;'></td><td style='min-width: 140px; vertical-align: top;'></td></tr><tr><td class='slot-cell'>N3 - N5<br>(3h)</td><td style='min-width: 140px; vertical-align: top;'>
+                <div class='aula-card '>
+                    
+                    <span class='materia'>SIN_P9_OB_01</span>
+                    <span class='prof'>Prof_SIN_13</span>
+                    <span class='lab'>Lab_Hardware</span>
+                </div>
+                </td><td style='min-width: 140px; vertical-align: top;'>
+                <div class='aula-card trilha-2'>
+                    <span class='badge-trilha bg-t2'>Trilha 2</span>
+                    <span class='materia'>SIN_P9_OP_01</span>
+                    <span class='prof'>Prof_SIN_11</span>
+                    
+                </div>
+                </td><td style='min-width: 140px; vertical-align: top;'></td><td style='min-width: 140px; vertical-align: top;'></td><td style='min-width: 140px; vertical-align: top;'></td></tr></tbody></table></div></div></div></div></div>
+    </div></div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    </body>
+    </html>
+    
