@@ -36,11 +36,8 @@ for i in range(max_len):
             SLOTS_TEMPO.append((dia, s_cco, s_sin))
 
 
-
 #Funcão identifica matérias optativas e atribui 'Trilhas' (1 ou 2) para permitir paralelismo.
 def processar_trilhas_optativas(df):
-    
-    
  
     df['Tipo_Real'] = df['Nome'].apply(lambda x: 'OP' if '_OP_' in x else 'OB')
     df['Trilha'] = None 
