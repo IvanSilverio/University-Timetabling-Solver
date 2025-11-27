@@ -14,7 +14,7 @@
 
 ## 🔗 Links Importantes
 
-- **Vídeo de Apresentação**: [[Insira o link do YouTube aqui](https://youtu.be/Nst9dYsIEVo)]
+- **Vídeo de Apresentação**: (https://youtu.be/Nst9dYsIEVo)
 
 ---
 
@@ -103,4 +103,5 @@ Melhor grade salva em 'grade_final.csv'.
 ```
 
 Você pode ajustar o tempo de execução ou as preferências dos professores diretamente no arquivo `main.py`.
+
 
